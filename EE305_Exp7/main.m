@@ -73,6 +73,7 @@ for iebno = 1 : length(EbNo_array_dB)
             error('End index exceeds the length of bit_stream_tx.');
         end
         
+        % Packet extraction
         bits_packet_tx = bit_stream_tx(start_idx : end_idx);
         
         %%%%%%%%%%%%% Convolutional Channel Coding(Exp 8)
