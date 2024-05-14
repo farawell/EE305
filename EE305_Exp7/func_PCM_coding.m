@@ -5,8 +5,9 @@ function bit_stream_tx = func_PCM_coding(data, bitsPerSample)
 
 
     % Convert the data to digital signal
-    for ind = 1:length(data)
+    for ind = 1 : length(data)
         value = data(ind);  % Each data value ranges from -1 to 1
+        % Scale value to [-2^(bitsPerSample-1)-0.5, 2^(bitsPerSample-1)-0.5]
         value = (2^(bitsPerSample-1)-0.5) * value; % scaling
         
         %=======================================================================
