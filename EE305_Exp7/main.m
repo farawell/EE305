@@ -13,9 +13,11 @@
 %  3. Perform convoluational encoding and decoding
 %  4. Assess voice quality for different SNR values
 
+% Clear the workspace & Command window
 clear all;
 clc;
 
+% Basic settings
 j = sqrt(-1);
 f_sample = 8000;  % samples per second
 bitsPerSample = 3; % PCM coding parameter
@@ -28,27 +30,26 @@ load voice;
 plot(data); % check data
 disp('data size')
 size(data)
-data_array_rx=zeros(size(data));
 
+data_array_rx = zeros(size(data)); % Initialization
 
 %%%%%%%%%%%%% PCM Waveform encoding
-%disp('Under PCM coding')
 bit_stream_tx = func_PCM_coding(data, bitsPerSample); 
 %%%% Insert script:  Use 8bit O2C offset 2's complement binary scheme 
 %%%% to represent a value x[n], where -1 <= x[n] <= 1
 %%%% data => s[n]
-disp('bit stream tx size')
+disp('size of bit_stream_tx')
 size(bit_stream_tx)
-number_of_packets = length(bit_stream_tx)/block_size;
-bit_stream_rx = zeros(length(bit_stream_tx),1);
 
+number_of_packets = length(bit_stream_tx) / block_size; % block_size = 128
 
+% Initialization
+bit_stream_rx = zeros(length(bit_stream_tx),1); 
 BER = zeros(length(EbNo_array_dB),1);
 BER_theo = zeros(length(EbNo_array_dB),1);
 
-% Iterate 6 times
-for iebno = 1:length(EbNo_array_dB)
-    
+% Iterate 6 times for each dB (EbNo_array_dB)
+for iebno = 1 : length(EbNo_array_dB)
     EbNo_dB=EbNo_array_dB(iebno);
     EbNo_dB;
     EbNo = 10^(0.1*EbNo_dB);
@@ -66,6 +67,7 @@ for iebno = 1:length(EbNo_array_dB)
         bits_packet_tx = bit_stream_tx( (ipacket-1)*block_size+1: ipacket*block_size );       
         
         %%%%%%%%%%%%% Convolutional Channel Coding
+        %encoded_bits_packet_tx = func_conv_coding(bits_packet_tx);
         encoded_bits_packet_tx =  bits_packet_tx;    
 
         %%%%%%%%%%%%% QPSK modulation
@@ -86,6 +88,7 @@ for iebno = 1:length(EbNo_array_dB)
         received_bits_packet_rx = func_QPSK_demodulation(symbols_packet_rx);    
         
         %%%%%%%%%%%%% Convolutional Decoding
+        %decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx);
         decoded_bits_packet_rx = received_bits_packet_rx;        
         
         %%%%%%%%%%%%% Reconstruct the whole file
@@ -102,9 +105,7 @@ for iebno = 1:length(EbNo_array_dB)
 
     % PCM decoding and replay the sound
     disp('bit stream rx size')
-    size(bit_stream_rx) % Display the size
-
-    % decode the input bit stream with bitsPerSample
+    size(bit_stream_rx)
     data_array_rx = func_PCM_decoding(bit_stream_rx,bitsPerSample);    %added
     sum(abs(data - data_array_rx)) %added 
     plot(data_array_rx)
