@@ -23,14 +23,16 @@ function symbols_packet_tx = func_QPSK_modulation(encoded_bits_packet_tx)
         bit_patterns = [b00 b01 b10 b11];
         symbols = [s00 s01 s10 s11];    
 
-        sym_idx_start = (ind - 1) * number_of_bits_per_symbol + 1;
-        sym_idx_end = ind * number_of_bits_per_symbol;
-        bits = encoded_bits_packet_tx(sym_idx_start : sym_idx_end);
+        % Extract the bit pattern corresponding to current 'ind'
+        bit_idx_start = (ind - 1) * number_of_bits_per_symbol + 1;
+        bit_idx_end = ind * number_of_bits_per_symbol;
+        bits = encoded_bits_packet_tx(bit_idx_start : bit_idx_end);
 
+        % Assign appropriate symbol to bit pattern 'bits'
         for k = 1 : 4
             if isequal(bits, bit_patterns(:, k))
                 symbols_packet_tx(ind) = symbols(k);
-                break;
+                break; % Iterate until matching
             end
         end
     %=======================================================================    
