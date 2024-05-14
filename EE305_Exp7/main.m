@@ -102,7 +102,9 @@ for iebno = 1:length(EbNo_array_dB)
 
     % PCM decoding and replay the sound
     disp('bit stream rx size')
-    size(bit_stream_rx)
+    size(bit_stream_rx) % Display the size
+
+    % decode the input bit stream with bitsPerSample
     data_array_rx = func_PCM_decoding(bit_stream_rx,bitsPerSample);    %added
     sum(abs(data - data_array_rx)) %added 
     plot(data_array_rx)
