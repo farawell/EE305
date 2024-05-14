@@ -53,37 +53,36 @@ for iebno = 1 : length(EbNo_array_dB)
     EbNo_dB=EbNo_array_dB(iebno);
     EbNo_dB;
     EbNo = 10^(0.1*EbNo_dB);
-    %calcuate signal gain and noise variance from EbNo:  Eb/No = 0.5 Es/No = 0.5 * gain^2/No;                                                  
+    % Calcuate signal gain and noise variance from EbNo:  
+    % Eb/No = 0.5 Es/No = 0.5 * gain^2/No;                                                  
     % sigma^2 = No/2
     %=======================================================================
     gain = 1;
     sigma = sqrt(0.5*(0.5*gain^2/EbNo));
-    %=======================================================================
-    % sigma=0.1;    
+    %======================================================================= 
     
     for ipacket=1:number_of_packets
 
         %%%%%%%%%%%%% Take a packet from bit_stream_tx
-        bits_packet_tx = bit_stream_tx( (ipacket-1)*block_size+1: ipacket*block_size );       
+        bits_packet_tx = bit_stream_tx((ipacket-1)*block_size+1 : ipacket*block_size );       
         
-        %%%%%%%%%%%%% Convolutional Channel Coding
+        %%%%%%%%%%%%% Convolutional Channel Coding(Exp 8)
         %encoded_bits_packet_tx = func_conv_coding(bits_packet_tx);
         encoded_bits_packet_tx =  bits_packet_tx;    
 
         %%%%%%%%%%%%% QPSK modulation
-        %generate symbol_block of complex symbols with unit magnitude
+        % generate symbol_block of complex symbols with unit magnitude
         symbols_packet_tx = func_QPSK_modulation(encoded_bits_packet_tx);        
 
         %%%%%%%%%%%%% AWGN and Receiver
         %=======================================================================
         % AWGN
         arr_size = size(symbols_packet_tx);
-        AWGN = sigma * (randn(arr_size)+randn(arr_size)*j);
+        AWGN = sigma * (randn(arr_size) + randn(arr_size)*j);
         symbols_packet_rx = symbols_packet_tx + AWGN;
 
         %=======================================================================
         
-         
         %%%%%%%%%%%%% Hard-decision QPSK demodulation
         received_bits_packet_rx = func_QPSK_demodulation(symbols_packet_rx);    
         
@@ -106,11 +105,12 @@ for iebno = 1 : length(EbNo_array_dB)
     % PCM decoding and replay the sound
     disp('bit stream rx size')
     size(bit_stream_rx)
-    data_array_rx = func_PCM_decoding(bit_stream_rx,bitsPerSample);    %added
+    data_array_rx = func_PCM_decoding(bit_stream_rx,bitsPerSample); %added
     sum(abs(data - data_array_rx)) %added 
     plot(data_array_rx)
 
-    sound(data_array_rx,8000);% generate sound using the array 'data' with 8kHz sampling rate with 8 bit resolution.
+    % generate sound using the array 'data' with 8kHz sampling rate with 8 bit resolution.
+    sound(data_array_rx,8000); 
  
     disp('paused after one iebno iteration')
     pause
