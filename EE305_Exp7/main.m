@@ -61,10 +61,19 @@ for iebno = 1 : length(EbNo_array_dB)
     sigma = sqrt(0.5*(0.5*gain^2/EbNo));
     %======================================================================= 
     
-    for ipacket=1:number_of_packets
+    for ipacket = 1 : number_of_packets
 
         %%%%%%%%%%%%% Take a packet from bit_stream_tx
-        bits_packet_tx = bit_stream_tx((ipacket-1)*block_size+1 : ipacket*block_size );       
+        % Extract a packet from bit_stream_tx
+        start_idx = (ipacket - 1) * block_size + 1;
+        end_idx = ipacket * block_size;
+        
+        % Ensure indices are valid
+        if end_idx > length(bit_stream_tx)
+            error('End index exceeds the length of bit_stream_tx.');
+        end
+        
+        bits_packet_tx = bit_stream_tx(start_idx : end_idx);
         
         %%%%%%%%%%%%% Convolutional Channel Coding(Exp 8)
         %encoded_bits_packet_tx = func_conv_coding(bits_packet_tx);
