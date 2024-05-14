@@ -73,7 +73,7 @@ for iebno = 1 : length(EbNo_array_dB)
             error('End index exceeds the length of bit_stream_tx.');
         end
         
-        % Packet extraction
+        % Extract the ipacket-th packet
         bits_packet_tx = bit_stream_tx(start_idx : end_idx);
         
         %%%%%%%%%%%%% Convolutional Channel Coding(Exp 8)
@@ -86,11 +86,14 @@ for iebno = 1 : length(EbNo_array_dB)
 
         %%%%%%%%%%%%% AWGN and Receiver
         %=======================================================================
-        % AWGN
-        arr_size = size(symbols_packet_tx);
-        AWGN = sigma * (randn(arr_size) + randn(arr_size)*j);
-        symbols_packet_rx = symbols_packet_tx + AWGN;
+        % Get the size of the input symbols packet
+        arr_size = size(symbols_packet_tx);  
 
+        % Generate complex Gaussian noise
+        AWGN = sigma * (randn(arr_size) + 1j * randn(arr_size));
+
+        % Add noise to the transmitted symbols to simulate the received symbols
+        symbols_packet_rx = symbols_packet_tx + AWGN;
         %=======================================================================
         
         %%%%%%%%%%%%% Hard-decision QPSK demodulation
@@ -101,8 +104,7 @@ for iebno = 1 : length(EbNo_array_dB)
         decoded_bits_packet_rx = received_bits_packet_rx;        
         
         %%%%%%%%%%%%% Reconstruct the whole file
-        bit_stream_rx((ipacket-1)*block_size+1: ipacket*block_size) = decoded_bits_packet_rx;
-       
+        bit_stream_rx(start_idx : end_idx) = decoded_bits_packet_rx;
     end
     
     %=======================================================================
