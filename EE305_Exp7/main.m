@@ -47,7 +47,7 @@ BER = zeros(length(EbNo_array_dB),1);
 BER_theo = zeros(length(EbNo_array_dB),1);
 
 % Iterate 6 times
-for iebno=1:length(EbNo_array_dB)
+for iebno = 1:length(EbNo_array_dB)
     
     EbNo_dB=EbNo_array_dB(iebno);
     EbNo_dB;
