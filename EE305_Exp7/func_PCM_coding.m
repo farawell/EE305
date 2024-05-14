@@ -9,10 +9,16 @@ function bit_stream_tx = func_PCM_coding(data, bitsPerSample)
         
         %=======================================================================
         %PCM coding
+
+        % Round down the variable 'value'
         flr = floor(value);
+
+        % When 'flr' is negative
         if (flr < 0)
             flr = flr + 2^(bitsPerSample);
         end
+
+        % Convert each elements in 'flr' to binary number
         bits = de2bi(flr, bitsPerSample, 'left-msb');
         %=======================================================================
         
