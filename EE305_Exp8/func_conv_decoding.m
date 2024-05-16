@@ -5,7 +5,7 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
     V0 = 0; V1 = 0; V2 = 0; V3 = 0;    
     for ind = 1 : length(decoded_bits_packet_rx)
         
-        codeword = received_bits_packet_rx(2 * ind-1:2 * ind);
+        codeword = received_bits_packet_rx(2 * ind - 1 : 2 * ind);
         metric_00 = sum(double(codeword ~= [0; 0]));
         metric_01 = sum(double(codeword ~= [1; 1]));
         metric_02 = sum(double(codeword ~= [0; 1]));
