@@ -3,7 +3,7 @@ function encoded_bits_packet_tx = func_conv_coding(bits_packet_tx)
     % length of bits_packet_tx: 128
     % length of encoded_bits_packet_tx: 256
 
-    encoded_bits_packet_tx=zeros(length(bits_packet_tx)*2,1);
+    encoded_bits_packet_tx = zeros(length(bits_packet_tx)*2,1);
     
     % initial state
     state_0 = 0;

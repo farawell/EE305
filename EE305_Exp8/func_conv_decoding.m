@@ -1,9 +1,9 @@
 function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
     
-    decoded_bits_packet_rx=zeros(length(received_bits_packet_rx)/2,1);
+    decoded_bits_packet_rx = zeros(length(received_bits_packet_rx)/2,1);
     
     V0 = 0; V1 = 0; V2 = 0; V3 = 0;    
-    for ind = 1:length(decoded_bits_packet_rx)
+    for ind = 1 : length(decoded_bits_packet_rx)
         
         codeword = received_bits_packet_rx(2 * ind-1:2 * ind);
         metric_00 = sum(double(codeword ~= [0; 0]));
@@ -14,6 +14,7 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
         metric_11 = sum(double(codeword ~= [0; 0]));
         metric_12 = sum(double(codeword ~= [1; 0]));
         metric_13 = sum(double(codeword ~= [0; 1]));
+
         if ind == 1
             V0 = metric_00;
             M0 = [0];
@@ -32,7 +33,7 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
             else
                 % Compute path metric for each state
                 %=======================================================================
-                % Write code here
+                
                 %=======================================================================
                 M0_t = [M1 * (i0==1) + M0 * (i0 == 2); 0];
                 M1_t = [M2 * (i1==1) + M3 * (i1 == 2); 0];
@@ -43,7 +44,6 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
             V1 = V1_t; M1 = M1_t;
             V2 = V2_t; M2 = M2_t;
             V3 = V3_t; M3 = M3_t;
-            
         end
     end
 % Find the decoder output by comparing the final path metrics
