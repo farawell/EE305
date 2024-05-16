@@ -97,6 +97,19 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
 % Find the decoder output by comparing the final path metrics
 %=======================================================================
 % Write code here
+% Choosing the smallest path metric
+V_candidates = [V0 V1 V2 V3];
+V_min = min(V_candidates);
 
+% choosing most likely path and saving it in decoded_bits_packet_rx
+if V_min == V0
+    decoded_bits_packet_rx = M0;
+elseif V_min == V1
+    decoded_bits_packet_rx = M1;
+elseif V_min == V2
+    decoded_bits_packet_rx = M2;
+else
+    decoded_bits_packet_rx = M3;
+end
 %=======================================================================    
 end
