@@ -26,7 +26,7 @@ EbNo_array_dB = [0:2:10]; % [0 2 4 6 8 10]
 
 
 %%%%%%%%%%%%% Load the data
-load voice;
+load music;
 plot(data); % check data
 disp('data size')
 size(data)
@@ -137,3 +137,4 @@ grid on
 semilogy(EbNo_array_dB,BER_theo,'-o') %added 
 xlabel('Eb/No [dB]');
 ylabel('BER');
+legend('BER', 'BER-theo')
