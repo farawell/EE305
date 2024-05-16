@@ -41,7 +41,7 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
                 % candidates for previous state of state 00 : 00, 01
                 path_00 = V0 + metric_00;
                 path_10 = V1 + metric_01;
-                if (path_00 < path < 10)
+                if (path_00 < path_10)
                     V0_t = path_00;
                     i0 = 2;
                 else
