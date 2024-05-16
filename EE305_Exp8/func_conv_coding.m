@@ -19,7 +19,9 @@ function encoded_bits_packet_tx = func_conv_coding(bits_packet_tx)
         inputBit = bits_packet_tx(ind);
         encoderState = [inputBit state_0 state_1];
 
+        % Here, we use the following property:
         % A XOR B == mod(sum(A, B), 2)
+        % A: bit, B: bit, we use double() to handle carrier
         output_1 = mod(sum(double(encoderState .* A)), 2);
         output_2 = mod(sum(double(encoderState .* B)), 2);
         
