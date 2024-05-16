@@ -77,8 +77,8 @@ for iebno = 1 : length(EbNo_array_dB)
         bits_packet_tx = bit_stream_tx(start_idx : end_idx);
         
         %%%%%%%%%%%%% Convolutional Channel Coding(Exp 8)
-        %encoded_bits_packet_tx = func_conv_coding(bits_packet_tx);
-        encoded_bits_packet_tx =  bits_packet_tx;    
+        encoded_bits_packet_tx = func_conv_coding(bits_packet_tx);
+        % encoded_bits_packet_tx =  bits_packet_tx;
 
         %%%%%%%%%%%%% QPSK modulation
         % generate symbol_block of complex symbols with unit magnitude
@@ -100,8 +100,8 @@ for iebno = 1 : length(EbNo_array_dB)
         received_bits_packet_rx = func_QPSK_demodulation(symbols_packet_rx);    
         
         %%%%%%%%%%%%% Convolutional Decoding
-        %decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx);
-        decoded_bits_packet_rx = received_bits_packet_rx;        
+        decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx);
+        % decoded_bits_packet_rx = received_bits_packet_rx;        
         
         %%%%%%%%%%%%% Reconstruct the whole file
         bit_stream_rx(start_idx : end_idx) = decoded_bits_packet_rx;
