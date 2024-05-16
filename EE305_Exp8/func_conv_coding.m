@@ -28,7 +28,7 @@ function encoded_bits_packet_tx = func_conv_coding(bits_packet_tx)
         % Fill in the output array
         start_idx = 2 * ind - 1;
         end_idx = 2 * ind;
-        encoded_bits_packet_tx(start_idx, end_idx) = [output_1; output_2];
+        encoded_bits_packet_tx(start_idx : end_idx) = [output_1; output_2];
         %=======================================================================
        
         % memory update
