@@ -42,26 +42,19 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
                 % Compute path metric for each state
                 %=======================================================================
                 % path_mn = path metric from state m to state n
-                % candidates for previous state of state 00 : 00, 01
-                path_00 = V0 + metric_00;
-                path_10 = V1 + metric_01;
-                [V0_t, i0] = min([path_10, path_00]);
+                path_00 = V0 + metric_00; path_10 = V1 + metric_01; % candidates for previous state of state 00 : 00, 01
+                path_21 = V2 + metric_02; path_31 = V3 + metric_03; % candidates for previous state of state 01 : 10, 11
+                path_02 = V0 + metric_10; path_12 = V1 + metric_11; % candidates for previous state of state 10 : 00, 01
+                path_23 = V2 + metric_12; path_33 = V3 + metric_13; % candidates for previous state of state 11 : 10, 11
 
-                % candidates for previous state of state 01 : 10, 11
-                path_21 = V2 + metric_02;
-                path_31 = V3 + metric_03;
-                [V1_t, i1] = min([path_21, path_31]);
+                metrics = [V1 + metric_01, V2 + metric_02, V0 + metric_10, V2 + metric_12;
+                           V0 + metric_00, V3 + metric_03, V1 + metric_11, V3 + metric_13];
 
-                % candidates for previous state of state 10 : 00, 01
-                path_02 = V0 + metric_10;
-                path_12 = V1 + metric_11;
-                [V2_t, i2] = min([path_02, path_12]);
+                % Retrieve the minimum values for each column
+                [V, id] = min(metrics);
 
-                % candidates for previous state of state 11 : 10, 11
-                path_23 = V2 + metric_12;
-                path_33 = V3 + metric_13;
-                [V3_t, i3] = min([path_23, path_33]);
-
+                V0_t = V(1); V1_t = V(2); V2_t = V(3); V3_t = V(4);
+                i0 = id(1);  i1 = id(2);  i2 = id(3);  i3 = id(4);
                 %=======================================================================
                 M0_t = [M1 * (i0 == 1) + M0 * (i0 == 2); 0];
                 M1_t = [M2 * (i1 == 1) + M3 * (i1 == 2); 0];
