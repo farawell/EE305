@@ -9,7 +9,8 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
     for ind = 1 : length(decoded_bits_packet_rx)
         % extract a pair of received bits in each iteration
         codeword = received_bits_packet_rx(2 * ind - 1 : 2 * ind);
-        % metric_ab = branch metric when input = a(0 or 1), current state = b(decimal)
+        
+        % metric_ab = branch metric when input = a(0 or 1), current state = bi2dec(state)
         metric_00 = sum(double(codeword ~= [0; 0]));
         metric_01 = sum(double(codeword ~= [1; 1]));
         metric_02 = sum(double(codeword ~= [0; 1]));
@@ -23,9 +24,9 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
         % available next states are 00 and 10
         if ind == 1
             V0 = metric_00;
-            M0 = [0];
+            M0 = 0;
             V2 = metric_10;
-            M2 = [1];
+            M2 = 1;
         else
             %% only one case possible to reach each state when ind == 2
             if ind == 2
@@ -77,14 +78,9 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
 %=======================================================================
 % Write code here
 [~, idx] = min([V0, V1, V2, V3]);
-
+M = [M0, M1, M2, M3];
 
 % choosing most likely path and saving it in decoded_bits_packet_rx
-switch idx
-    case 1, decoded_bits_packet_rx = M0;
-    case 2, decoded_bits_packet_rx = M1;
-    case 3, decoded_bits_packet_rx = M2;
-    case 4, decoded_bits_packet_rx = M3;
-end
+decoded_bits_packet_rx = M(:, idx);
 %=======================================================================    
 end
