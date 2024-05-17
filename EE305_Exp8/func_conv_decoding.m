@@ -1,8 +1,11 @@
 function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
     
     decoded_bits_packet_rx = zeros(length(received_bits_packet_rx)/2,1);
+
     % V_n = path metric to state n(decimal)
     V0 = 0; V1 = 0; V2 = 0; V3 = 0;    
+    M0 = []; M1 = []; M2 = []; M3 = []; % Pre-allocate the memory
+
     for ind = 1 : length(decoded_bits_packet_rx)
         % extract a pair of received bits in each iteration
         codeword = received_bits_packet_rx(2 * ind - 1 : 2 * ind);
@@ -41,46 +44,22 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
                 % candidates for previous state of state 00 : 00, 01
                 path_00 = V0 + metric_00;
                 path_10 = V1 + metric_01;
-                if (path_00 < path_10)
-                    V0_t = path_00;
-                    i0 = 2;
-                else
-                    V0_t = path_10;
-                    i0 = 1;
-                end
+                [V0_t, i0] = min([path_10, path_00]);
 
                 % candidates for previous state of state 01 : 10, 11
                 path_21 = V2 + metric_02;
                 path_31 = V3 + metric_03;
-                if (path_21 < path_31)
-                    V1_t = path_21;
-                    i1 = 1;
-                else
-                    V1_t = path_31;
-                    i1 = 2;
-                end
+                [V1_t, i1] = min([path_21, path_31]);
 
                 % candidates for previous state of state 10 : 00, 01
                 path_02 = V0 + metric_10;
                 path_12 = V1 + metric_11;
-                if (path_02 < path_12)
-                    V2_t = path_02;
-                    i2 = 1;
-                else
-                    V2_t = path_12;
-                    i2 = 2;
-                end
+                [V2_t, i2] = min([path_02, path_12]);
 
                 % candidates for previous state of state 11 : 10, 11
                 path_23 = V2 + metric_12;
                 path_33 = V3 + metric_13;
-                if (path_23 < path_33)
-                    V3_t = path_23;
-                    i3 = 1;
-                else
-                    V3_t = path_33;
-                    i3 = 2;
-                end
+                [V3_t, i3] = min([path_23, path_33]);
 
                 %=======================================================================
                 M0_t = [M1 * (i0 == 1) + M0 * (i0 == 2); 0];
@@ -97,19 +76,15 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
 % Find the decoder output by comparing the final path metrics
 %=======================================================================
 % Write code here
-% Choosing the smallest path metric
-V_candidates = [V0 V1 V2 V3];
-V_min = min(V_candidates);
+[~, idx] = min([V0, V1, V2, V3]);
+
 
 % choosing most likely path and saving it in decoded_bits_packet_rx
-if V_min == V0
-    decoded_bits_packet_rx = M0;
-elseif V_min == V1
-    decoded_bits_packet_rx = M1;
-elseif V_min == V2
-    decoded_bits_packet_rx = M2;
-else
-    decoded_bits_packet_rx = M3;
+switch idx
+    case 1, decoded_bits_packet_rx = M0;
+    case 2, decoded_bits_packet_rx = M1;
+    case 3, decoded_bits_packet_rx = M2;
+    case 4, decoded_bits_packet_rx = M3;
 end
 %=======================================================================    
 end

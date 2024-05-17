@@ -20,7 +20,7 @@ clc;
 % Basic settings
 j = sqrt(-1);
 f_sample = 8000;  % samples per second
-bitsPerSample = 3; % PCM coding parameter
+bitsPerSample = 8; % PCM coding parameter
 block_size = 128;  % number of bits per packet
 EbNo_array_dB = [0:2:10]; % [0 2 4 6 8 10]
 
