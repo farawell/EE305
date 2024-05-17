@@ -76,7 +76,6 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
     end
 % Find the decoder output by comparing the final path metrics
 %=======================================================================
-% Write code here
 [~, idx] = min([V0, V1, V2, V3]);
 M = [M0, M1, M2, M3];
 
