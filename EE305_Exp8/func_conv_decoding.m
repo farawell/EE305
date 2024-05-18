@@ -47,8 +47,8 @@ function decoded_bits_packet_rx = func_conv_decoding(received_bits_packet_rx)
                 path_02 = V0 + metric_10; path_12 = V1 + metric_11; % candidates for previous state of state 10 : 00, 01
                 path_23 = V2 + metric_12; path_33 = V3 + metric_13; % candidates for previous state of state 11 : 10, 11
 
-                metrics = [V1 + metric_01, V2 + metric_02, V0 + metric_10, V2 + metric_12;
-                           V0 + metric_00, V3 + metric_03, V1 + metric_11, V3 + metric_13];
+                metrics = [path_10, path_21, path_02, path_23;
+                           path_00, path_31, path_12, path_33;];
 
                 % Retrieve the minimum values for each column
                 [V, id] = min(metrics);

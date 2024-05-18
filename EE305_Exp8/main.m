@@ -120,6 +120,9 @@ for iebno = 1 : length(EbNo_array_dB)
     data_array_rx = func_PCM_decoding(bit_stream_rx,bitsPerSample); %added
     sum(abs(data - data_array_rx)) %added 
     plot(data_array_rx)
+    
+    % Display the title with 'iebno' value
+    title(['EbNo = ', num2str(EbNo_dB), ' dB']);
 
     % generate sound using the array 'data' with 8kHz sampling rate with 8 bit resolution.
     sound(data_array_rx,8000); 
