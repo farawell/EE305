@@ -111,6 +111,8 @@ for iebno = 1 : length(EbNo_array_dB)
     % For each Eb/No, compute empirical and theoretical BER
     BER_theo(iebno) = erfc(sqrt(EbNo))/2;
     BER(iebno) = sum(xor(bit_stream_rx, bit_stream_tx))/length(bit_stream_tx);
+    format long;
+    BER(iebno) = BER(iebno);
 
     %=======================================================================
 
